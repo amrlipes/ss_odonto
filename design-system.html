@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SS Odonto — Design System</title>
+    <!-- Stylesheets & Scripts from Source -->
+    <script src="./assets/overview/assets/cdn.tailwindcss.com/3.4.17.js"></script>
+    <script src="./assets/overview/assets/unpkg.com/lucide@1.61.0/dist/umd/lucide.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+        body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 255, 0.2); border-radius: 20px; }
+        ::-webkit-scrollbar-thumb:hover { background-color: rgba(255, 255, 255, 0.4); }
+
+        /* Utility: Hide Scrollbar */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Glass Surface from Source */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Animations from Source */
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes zoomSlow { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
+        .animate-fade-in-up { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-zoom-slow { animation: zoomSlow 20s linear infinite alternate; }
+
+        /* Comparison Slider from Source */
+        .comparison-slider { position: relative; width: 100%; overflow: hidden; touch-action: pan-y; }
+        .comparison-item { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
+        .comparison-handle { position: absolute; top: 0; bottom: 0; width: 2px; background: #fff; cursor: ew-resize; z-index: 20; }
+        .comparison-circle {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 40px; height: 40px; background: #fff; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25); color: #171717;
+            transition: transform 0.2s ease;
+        }
+        .comparison-handle:hover .comparison-circle { transform: translate(-50%, -50%) scale(1.1); }
+
+        /* Code metadata badge */
+        .ds-code-chip {
+            display: inline-flex;
+            align-items: center;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 11px;
+            color: #22d3ee;
+            background: rgba(34, 211, 238, 0.08);
+            border: 1px solid rgba(34, 211, 238, 0.2);
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
+        /* Specimen card container */
+        .ds-specimen-wrap {
+            position: relative;
+            background: rgba(18, 18, 18, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 24px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="h-full bg-neutral-950 text-white antialiased flex flex-col selection:bg-cyan-100 selection:text-cyan-900">
+
+    <!-- Reused Source Navbar -->
+    <nav class="fixed top-0 w-full z-50 transition-all duration-300 bg-neutral-950/90 backdrop-blur-md border-b border-white/10" id="navbar">
+        <div class="relative flex h-20 max-w-7xl mx-auto px-6 items-center justify-between">
+            <!-- Logo & Brand Name SS Odonto -->
+            <a href="#overview" class="flex items-center gap-3 z-50 relative group">
+                <div class="w-8 h-8 rounded-lg overflow-hidden border border-[#c5a059]/40 bg-[#071f22] transition-all duration-300">
+                    <img src="./assets/images/ss-odonto/logo-ss-odonto.jpg" alt="Logo SS Odonto" class="w-full h-full object-cover">
+                </div>
+                <div class="flex items-baseline gap-2">
+                    <span class="font-serif text-lg tracking-tight font-medium text-white transition-colors duration-300">SS Odonto</span>
+                    <span class="hidden sm:inline-block text-[10px] uppercase tracking-widest font-semibold px-2 py-0.5 rounded-full bg-[#c5a059]/15 text-[#dfba73] border border-[#c5a059]/30">Design System</span>
+                </div>
+            </a>
+
+            <!-- Catalog Navigation Tabs: Visão Geral | Componentes -->
+            <div class="flex items-center gap-1 backdrop-blur-md rounded-full px-2 py-1.5 border border-white/10 bg-white/5" id="nav-container">
+                <a href="#overview" id="tab-overview" class="px-5 py-1.5 text-xs font-semibold rounded-full transition-all duration-200">
+                    Visão Geral
+                </a>
+                <a href="#components" id="tab-components" class="px-5 py-1.5 text-xs font-semibold rounded-full transition-all duration-200">
+                    Componentes
+                </a>
+            </div>
+
+            <!-- Status Indicator -->
+            <div class="flex items-center gap-3">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-neutral-300 text-xs">
+                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                    <span class="text-[10px] uppercase tracking-widest text-neutral-300 font-medium">Fase 2 · Aprovado</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 w-full pt-20 h-full relative overflow-hidden" id="main-content">
+        <!-- Overview View (borderless iframe) -->
+        <iframe 
+            id="overview-frame" 
+            src="./assets/overview/index.html" 
+            title="Visão Geral" 
+            class="w-full h-full border-0 block"
+            style="height: calc(100vh - 80px);">
+        </iframe>
+
+        <!-- Components View (Source-backed Design System Catalog) -->
+        <div id="components-view" class="hidden w-full h-full relative" style="height: calc(100vh - 80px);">
+            <!-- Live Background: Reused Principal Animated Background from Overview -->
+            <div class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
+                <div class="absolute inset-0 w-full h-full animate-zoom-slow">
+                    <img src="./assets/images/ss-odonto/recepcao-clinica.webp" alt="Textura de Fundo" class="w-full h-full object-cover opacity-20">
+                </div>
+                <div class="absolute inset-0 bg-neutral-950/90 backdrop-blur-xl"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/80 to-transparent"></div>
+            </div>
+
+            <!-- Catalog Content Flexbox: Sticky Sidebar + Main Specimen Stacks -->
+            <div class="relative z-10 w-full h-full flex">
+                <!-- Sticky Left Navigation Sidebar -->
+                <aside class="w-64 shrink-0 h-full overflow-y-auto border-r border-white/10 bg-neutral-950/70 backdrop-blur-lg p-6 flex flex-col justify-between">
+                    <div class="space-y-6">
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-400 block mb-3">Fundações</span>
+                            <nav class="space-y-1">
+                                <a href="#foundations-typography" class="block px-3 py-1.5 text-xs font-medium text-neutral-400 hover:text-white hover:bg-white/5 rounded-md transition-colors">Tipografia</a>
+                                <a href="#foundations-colors" class="block px-3 py-1.5 text-xs font-medium text-neutral-400 hover:text-white hover:bg-white/5 rounded-md transition-colors">Cores &amp; Estados</a>
+                                <a href="#foundations-backgrounds" class="block px-3 py-1.5 text-xs font-medium text-neutral-400 hover:text-white hover:bg-white/5 rounded-md transition-colors">Planos de Fundo</a>
+                                <a href="#foundations-surfaces" class="block px-3 py-1.5 text-xs font-medium text-neutral-400 hover:text-white hover:bg-white/5 rounded-md transition-colors">Superfícies</a>
+                                <a href="#foundations-icons" class="block px-3 py-1.5 text-xs font-medium text-neutral-400 hover:text-white hover:bg-white/5 rounded-md transition-colors">Ícones</a>
+                            </nav>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-400 block mb-3">Componentes</span>
+                            <nav class="space-y-1">
+                                <a href="#components-actions" class="block px-3 py-1.5 text-xs font-medium text-neutral-400 hover:text-white hover:bg-white/5 rounded-md transition-colors">Ações &amp; Botões</a>
+                                <a href="#components-navigation" class="block px-3 py-1.5 text-xs font-medium text-neutral-400 hover:text-white hover:bg-white/5 rounded-md transition-colors">Navegação &amp; Menus</a>
+                                <a href="#components-cards" class="block px-3 py-1.5 text-xs font-medium text-neutral-400 hover:text-white hover:bg-white/5 rounded-md transition-colors">Cards &amp; Contêineres</a>
+                                <a href="#components-data-display" class="block px-3 py-1.5 text-xs font-medium text-neutral-400 hover:text-white hover:bg-white/5 rounded-md transition-colors">Exibição de Dados &amp; Sliders</a>
+                                <a href="#components-forms" class="block px-3 py-1.5 text-xs font-medium text-neutral-400 hover:text-white hover:bg-white/5 rounded-md transition-colors">Entradas &amp; Formulários</a>
+                                <a href="#components-footer" class="block px-3 py-1.5 text-xs font-medium text-neutral-400 hover:text-white hover:bg-white/5 rounded-md transition-colors">Rodapé da Marca</a>
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="pt-6 border-t border-white/10 text-[11px] text-neutral-500">
+                        Catálogo SS Odonto v1.0<br>
+                        Odontologia Especializada &amp; Estética
+                    </div>
+                </aside>
+
+                <!-- Specimen Scrollable Area -->
+                <div class="flex-1 h-full overflow-y-auto p-8 lg:p-12 space-y-24">
+
+                    <!-- ========================================== -->
+                    <!-- 1. TIPOGRAFIA                              -->
+                    <!-- ========================================== -->
+                    <section id="foundations-typography" class="scroll-mt-6 space-y-6">
+                        <div>
+                            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-cyan-400 block mb-1">Fundações</span>
+                            <h2 class="text-3xl font-serif text-white tracking-tight">Tipografia</h2>
+                            <p class="text-xs text-neutral-400 mt-1 max-w-2xl">
+                                Títulos clássicos em serifa de alto contraste com <span class="text-white font-medium">Playfair Display</span> combinados a uma família geométrica sem serifa neutra e refinada em <span class="text-white font-medium">Inter</span>.
+                            </p>
+                        </div>
+
+                        <div class="ds-specimen-wrap space-y-6">
+                            <!-- Type Row 1: Heading 1 -->
+                            <div class="grid grid-cols-12 gap-4 items-center pb-6 border-b border-white/10">
+                                <div class="col-span-3 text-xs">
+                                    <div class="font-semibold text-white">Título 1 (Hero)</div>
+                                    <div class="text-neutral-400 text-[11px]">Playfair Display · Normal</div>
+                                    <div class="mt-1"><span class="ds-code-chip">h1.font-serif</span></div>
+                                </div>
+                                <div class="col-span-7">
+                                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif text-white leading-[0.95] tracking-tight">
+                                        SS Odonto <span class="italic font-light text-white/80">Design System.</span>
+                                    </h1>
+                                </div>
+                                <div class="col-span-2 text-right text-xs font-mono text-cyan-400">
+                                    text-4xl | md:text-6xl | lg:text-7xl
+                                </div>
+                            </div>
+
+                            <!-- Type Row 2: Heading 2 -->
+                            <div class="grid grid-cols-12 gap-4 items-center pb-6 border-b border-white/10">
+                                <div class="col-span-3 text-xs">
+                                    <div class="font-semibold text-white">Título 2 (Seção)</div>
+                                    <div class="text-neutral-400 text-[11px]">Playfair Display · Regular</div>
+                                    <div class="mt-1"><span class="ds-code-chip">h2.tracking-tight</span></div>
+                                </div>
+                                <div class="col-span-7">
+                                    <h2 class="text-3xl md:text-4xl tracking-tight text-white font-serif">
+                                        Um Santuário para a <span class="italic text-neutral-400">Odontologia Moderna</span>
+                                    </h2>
+                                </div>
+                                <div class="col-span-2 text-right text-xs font-mono text-cyan-400">
+                                    text-3xl | md:text-4xl
+                                </div>
+                            </div>
+
+                            <!-- Type Row 3: Heading 3 -->
+                            <div class="grid grid-cols-12 gap-4 items-center pb-6 border-b border-white/10">
+                                <div class="col-span-3 text-xs">
+                                    <div class="font-semibold text-white">Título 3 / Subtítulo</div>
+                                    <div class="text-neutral-400 text-[11px]">Playfair Display · Regular</div>
+                                    <div class="mt-1"><span class="ds-code-chip">h3.font-serif</span></div>
+                                </div>
+                                <div class="col-span-7">
+                                    <h3 class="text-2xl font-serif text-white">
+                                        Dra. Responsável Técnica
+                                    </h3>
+                                </div>
+                                <div class="col-span-2 text-right text-xs font-mono text-cyan-400">
+                                    text-2xl (24px)
+                                </div>
+                            </div>
+
+                            <!-- Type Row 4: Service Title -->
+                            <div class="grid grid-cols-12 gap-4 items-center pb-6 border-b border-white/10">
+                                <div class="col-span-3 text-xs">
+                                    <div class="font-semibold text-white">Título 4 / Título de Card</div>
+                                    <div class="text-neutral-400 text-[11px]">Inter · SemiBold</div>
+                                    <div class="mt-1"><span class="ds-code-chip">.font-semibold</span></div>
+                                </div>
+                                <div class="col-span-7">
+                                    <h4 class="text-lg font-semibold tracking-tight text-white">
+                                        Odontologia Geral &amp; Estética
+                                    </h4>
+                                </div>
+                                <div class="col-span-2 text-right text-xs font-mono text-cyan-400">
+                                    text-lg (18px)
+                                </div>
+                            </div>
+
+                            <!-- Type Row 5: Editorial Quote -->
+                            <div class="grid grid-cols-12 gap-4 items-center pb-6 border-b border-white/10">
+                                <div class="col-span-3 text-xs">
+                                    <div class="font-semibold text-white">Citação Editorial</div>
+                                    <div class="text-neutral-400 text-[11px]">Playfair Display · Itálico</div>
+                                    <div class="mt-1"><span class="ds-code-chip">.font-serif.italic</span></div>
+                                </div>
+                                <div class="col-span-7">
+                                    <p class="font-serif italic text-xl md:text-2xl text-neutral-200">
+                                        “Unidos pela paixão pelo cuidado acolhedor e personalizado.”
+                                    </p>
+                                </div>
+                                <div class="col-span-2 text-right text-xs font-mono text-cyan-400">
+                                    text-xl | md:text-2xl
+                                </div>
+                            </div>
+
+                            <!-- Type Row 6: Eyebrow -->
+                            <div class="grid grid-cols-12 gap-4 items-center pb-6 border-b border-white/10">
+                                <div class="col-span-3 text-xs">
+                                    <div class="font-semibold text-white">Sobretítulo / Categoria</div>
+                                    <div class="text-neutral-400 text-[11px]">Inter · Negrito 700</div>
+                                    <div class="mt-1"><span class="ds-code-chip">.tracking-[0.2em]</span></div>
+                                </div>
+                                <div class="col-span-7">
+                                    <span class="text-cyan-400 text-[10px] font-bold tracking-[0.2em] uppercase block">
+                                        NOSSA ESPECIALIDADE &amp; SERVIÇOS
+                                    </span>
+                                </div>
+                                <div class="col-span-2 text-right text-xs font-mono text-cyan-400">
+                                    text-[10px] (10px)
+                                </div>
+                            </div>
+
+                            <!-- Type Row 7: Body Text -->
+                            <div class="grid grid-cols-12 gap-4 items-center">
+                                <div class="col-span-3 text-xs">
+                                    <div class="font-semibold text-white">Texto de Corpo</div>
+                                    <div class="text-neutral-400 text-[11px]">Inter · Light 300</div>
+                                    <div class="mt-1"><span class="ds-code-chip">.font-light.text-sm</span></div>
+                                </div>
+                                <div class="col-span-7">
+                                    <p class="text-sm text-neutral-300 font-light leading-relaxed">
+                                        Damos as boas-vindas ao nosso estúdio moderno, um refúgio acolhedor com atendimento clínico integral planejado para o seu conforto total.
+                                    </p>
+                                </div>
+                                <div class="col-span-2 text-right text-xs font-mono text-cyan-400">
+                                    text-sm (14px)
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ========================================== -->
+                    <!-- 2. CORES                                   -->
+                    <!-- ========================================== -->
+                    <section id="foundations-colors" class="scroll-mt-6 space-y-6">
+                        <div>
+                            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-cyan-400 block mb-1">Fundações</span>
+                            <h2 class="text-3xl font-serif text-white tracking-tight">Paleta de Cores</h2>
+                            <p class="text-xs text-neutral-400 mt-1 max-w-2xl">
+                                Tokens de cor funcionais observados no projeto em Destaques da Marca, Superfícies Claras/Escuras, Tipografia e Estados Interativos.
+                            </p>
+                        </div>
+
+                        <!-- Brand & Accent -->
+                        <div class="space-y-3">
+                            <h3 class="text-sm font-semibold text-neutral-200">Família de Marca &amp; Destaques</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <div class="p-4 rounded-xl bg-neutral-900 border border-white/10 space-y-3">
+                                    <div class="w-full h-12 rounded-lg bg-cyan-400 flex items-center justify-end p-2">
+                                        <span class="w-2 h-2 rounded-full bg-cyan-200 animate-pulse"></span>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs font-semibold text-white">Ciano 400 (Pulso / Brilho)</div>
+                                        <div class="text-[11px] font-mono text-cyan-400">#22d3ee · rgb(34, 211, 238)</div>
+                                        <div class="text-[11px] text-neutral-400 mt-1">Pontos de pulso de status, sobretítulos no modo escuro, ícones ativos</div>
+                                    </div>
+                                </div>
+                                <div class="p-4 rounded-xl bg-neutral-900 border border-white/10 space-y-3">
+                                    <div class="w-full h-12 rounded-lg bg-cyan-500 flex items-center justify-center">
+                                        <span class="text-neutral-950 font-bold text-xs">Seleção</span>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs font-semibold text-white">Ciano 500 (Interativo)</div>
+                                        <div class="text-[11px] font-mono text-cyan-400">#06b6d4 · rgb(6, 182, 212)</div>
+                                        <div class="text-[11px] text-neutral-400 mt-1">Anéis de seleção em formulários, bordas selecionadas, crachás</div>
+                                    </div>
+                                </div>
+                                <div class="p-4 rounded-xl bg-neutral-900 border border-white/10 space-y-3">
+                                    <div class="w-full h-12 rounded-lg bg-cyan-600 flex items-center justify-center">
+                                        <span class="text-white font-medium text-xs">Sobretítulo Claro</span>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs font-semibold text-white">Ciano 600 (Contraste Claro)</div>
+                                        <div class="text-[11px] font-mono text-cyan-400">#0891b2 · rgb(8, 145, 178)</div>
+                                        <div class="text-[11px] text-neutral-400 mt-1">Sobretítulos em superfícies brancas, transições de hover em links</div>
+                                    </div>
+                                </div>
+                                <div class="p-4 rounded-xl bg-neutral-900 border border-white/10 space-y-3">
+                                    <div class="w-full h-12 rounded-lg bg-cyan-50 border border-cyan-200 flex items-center justify-center">
+                                        <span class="text-cyan-900 font-semibold text-xs">Fundo Hover</span>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs font-semibold text-white">Ciano 50 (Preenchimento Hover)</div>
+                                        <div class="text-[11px] font-mono text-cyan-400">#ecfeff · rgb(236, 254, 255)</div>
+                                        <div class="text-[11px] text-neutral-400 mt-1">Tons de fundo sutis em hover de botões e menus suspensos</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Surfaces & Neutrals -->
+                        <div class="space-y-3">
+                            <h3 class="text-sm font-semibold text-neutral-200">Superfícies &amp; Fundos</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <div class="p-4 rounded-xl bg-neutral-900 border border-white/10 space-y-3">
+                                    <div class="w-full h-12 rounded-lg bg-neutral-950 border border-white/20 flex items-center justify-center">
+                                        <span class="text-white text-xs">Superfície Escura</span>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs font-semibold text-white">Neutral 950</div>
+                                        <div class="text-[11px] font-mono text-neutral-400">#0a0a0a · rgb(10, 10, 10)</div>
+                                        <div class="text-[11px] text-neutral-400 mt-1">Fundo do Hero, seção de Novos Pacientes e Rodapé</div>
+                                    </div>
+                                </div>
+                                <div class="p-4 rounded-xl bg-neutral-900 border border-white/10 space-y-3">
+                                    <div class="w-full h-12 rounded-lg bg-neutral-900 border border-white/10 flex items-center justify-center">
+                                        <span class="text-white text-xs">Escuro Elevado</span>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs font-semibold text-white">Neutral 900</div>
+                                        <div class="text-[11px] font-mono text-neutral-400">#171717 · rgb(23, 23, 23)</div>
+                                        <div class="text-[11px] text-neutral-400 mt-1">Botões escuros, títulos e elementos de pílula sólida</div>
+                                    </div>
+                                </div>
+                                <div class="p-4 rounded-xl bg-neutral-900 border border-white/10 space-y-3">
+                                    <div class="w-full h-12 rounded-lg bg-white flex items-center justify-center">
+                                        <span class="text-neutral-900 font-bold text-xs">Branco Puro</span>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs font-semibold text-white">White (#ffffff)</div>
+                                        <div class="text-[11px] font-mono text-neutral-400">#ffffff · rgb(255, 255, 255)</div>
+                                        <div class="text-[11px] text-neutral-400 mt-1">Grade de serviços, seção Sobre e modal de agendamento</div>
+                                    </div>
+                                </div>
+                                <div class="p-4 rounded-xl bg-neutral-900 border border-white/10 space-y-3">
+                                    <div class="w-full h-12 rounded-lg glass-panel flex items-center justify-center">
+                                        <span class="text-white font-medium text-xs">Painel em Vidro</span>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs font-semibold text-white">Vidro Fosco (rgba 3%)</div>
+                                        <div class="text-[11px] font-mono text-neutral-400">rgba(255,255,255,0.03) + 12px blur</div>
+                                        <div class="text-[11px] text-neutral-400 mt-1">Crachás do Hero, botões secundários e painéis translúcidos</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Interaction States -->
+                        <div class="space-y-3">
+                            <h3 class="text-sm font-semibold text-neutral-200">Progressão de Estados Interativos (Padrão | Hover | Ativo | Selecionado)</h3>
+                            <div class="ds-specimen-wrap grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div class="p-3 bg-neutral-950 rounded-lg border border-white/10 text-center">
+                                    <div class="text-[10px] uppercase tracking-wider text-neutral-400 mb-2">Padrão</div>
+                                    <span class="px-4 py-2 bg-white text-neutral-950 rounded-full text-xs font-semibold inline-block">Botão</span>
+                                </div>
+                                <div class="p-3 bg-neutral-950 rounded-lg border border-white/10 text-center">
+                                    <div class="text-[10px] uppercase tracking-wider text-neutral-400 mb-2">Hover</div>
+                                    <span class="px-4 py-2 bg-neutral-200 text-neutral-950 rounded-full text-xs font-semibold inline-block">Botão</span>
+                                </div>
+                                <div class="p-3 bg-neutral-950 rounded-lg border border-white/10 text-center">
+                                    <div class="text-[10px] uppercase tracking-wider text-neutral-400 mb-2">Ativo (Clique)</div>
+                                    <span class="px-4 py-2 bg-neutral-300 text-neutral-950 rounded-full text-xs font-semibold inline-block scale-95">Botão</span>
+                                </div>
+                                <div class="p-3 bg-neutral-950 rounded-lg border border-white/10 text-center">
+                                    <div class="text-[10px] uppercase tracking-wider text-neutral-400 mb-2">Selecionado</div>
+                                    <span class="px-4 py-2 bg-neutral-900 text-white rounded-full text-xs font-semibold inline-block border border-cyan-400">Botão</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ========================================== -->
+                    <!-- 3. PLANOS DE FUNDO                         -->
+                    <!-- ========================================== -->
+                    <section id="foundations-backgrounds" class="scroll-mt-6 space-y-6">
+                        <div>
+                            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-cyan-400 block mb-1">Fundações</span>
+                            <h2 class="text-3xl font-serif text-white tracking-tight">Planos de Fundo</h2>
+                            <p class="text-xs text-neutral-400 mt-1 max-w-2xl">
+                                Cenários visuais autênticos extraídos do projeto, preservando animações reais, gradientes de máscara e camadas fotográficas.
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- Background 1: Hero Zoom Backdrop -->
+                            <div class="ds-specimen-wrap p-0 h-72 flex flex-col justify-end p-6">
+                                <div class="absolute inset-0 w-full h-full overflow-hidden animate-zoom-slow">
+                                    <img src="./assets/overview/assets/i.ibb.co/9mY4fcvX/Dentists-on-white-sofa.webp" alt="Equipe Odontológica" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-neutral-950/90 via-transparent to-neutral-950/20"></div>
+                                </div>
+                                <div class="relative z-10">
+                                    <span class="ds-code-chip mb-2">.animate-zoom-slow + bg-gradient-to-t</span>
+                                    <h4 class="text-xl font-serif text-white">Atmosfera de Zoom Luminoso do Hero</h4>
+                                    <p class="text-xs text-white/70">Zoom linear contínuo de 20s sobre fotografia editorial de estúdio</p>
+                                </div>
+                            </div>
+
+                            <!-- Background 2: Translucent Frosted Glass Layer -->
+                            <div class="ds-specimen-wrap relative p-6 h-72 flex flex-col justify-center items-center">
+                                <div class="absolute inset-0 overflow-hidden">
+                                    <img src="./assets/overview/assets/i.ibb.co/ync4gYGR/AD-Team.jpg" class="w-full h-full object-cover opacity-40 filter blur-xs" alt="Equipe">
+                                </div>
+                                <div class="relative z-10 glass-panel p-6 rounded-2xl max-w-sm text-center">
+                                    <span class="ds-code-chip mb-2">.glass-panel (backdrop-blur-md)</span>
+                                    <h4 class="text-lg font-serif text-white">Camada de Vidro Fosco (Glassmorphism)</h4>
+                                    <p class="text-xs text-neutral-300 mt-1">Superfície translúcida a 3% com desfoque de 12px e borda suave a 8%</p>
+                                </div>
+                            </div>
+
+                            <!-- Background 3: Clean Medical Studio White -->
+                            <div class="rounded-2xl bg-white text-neutral-900 border border-neutral-200 p-6 h-72 flex flex-col justify-between">
+                                <span class="ds-code-chip text-neutral-800 bg-neutral-100 border-neutral-300 w-fit">.bg-white.border-neutral-100</span>
+                                <div>
+                                    <h4 class="text-2xl font-serif text-neutral-900">Superfície Branca Clínica de Estúdio</h4>
+                                    <p class="text-xs text-neutral-500 mt-1">Pureza clínica de alto contraste para grades de serviços e agendamentos</p>
+                                </div>
+                                <div class="text-[11px] text-neutral-400 font-mono">rgb(255, 255, 255)</div>
+                            </div>
+
+                            <!-- Background 4: Deep Carbon Contrast -->
+                            <div class="rounded-2xl bg-neutral-950 text-white border border-neutral-800 p-6 h-72 flex flex-col justify-between">
+                                <span class="ds-code-chip w-fit">.bg-neutral-950.border-neutral-800</span>
+                                <div>
+                                    <h4 class="text-2xl font-serif text-white">Superfície Carbono Profundo</h4>
+                                    <p class="text-xs text-neutral-400 mt-1">Contraste escuro sofisticado utilizado nas transformações Antes/Depois e no rodapé</p>
+                                </div>
+                                <div class="text-[11px] text-neutral-500 font-mono">rgb(10, 10, 10)</div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ========================================== -->
+                    <!-- 4. SUPERFÍCIES                             -->
+                    <!-- ========================================== -->
+                    <section id="foundations-surfaces" class="scroll-mt-6 space-y-6">
+                        <div>
+                            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-cyan-400 block mb-1">Fundações</span>
+                            <h2 class="text-3xl font-serif text-white tracking-tight">Superfícies &amp; Elevações</h2>
+                            <p class="text-xs text-neutral-400 mt-1 max-w-2xl">
+                                Superfícies de contêineres recorrentes com desfoque real, bordas, máscaras e configurações de sombra.
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <!-- Surface 1: Glass Pill -->
+                            <div class="ds-specimen-wrap space-y-4">
+                                <span class="ds-code-chip">.glass-panel.rounded-full</span>
+                                <div class="py-6 flex items-center justify-center">
+                                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-white/10">
+                                        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                                        <span class="text-xs font-semibold tracking-wider text-neutral-200 uppercase">Pílula Flutuante em Vidro</span>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-neutral-400">Utilizada para alertas de status no hero e botões secundários</div>
+                            </div>
+
+                            <!-- Surface 2: Elevated Light Card -->
+                            <div class="bg-neutral-900 border border-white/10 rounded-2xl p-6 space-y-4">
+                                <span class="ds-code-chip text-neutral-800 bg-neutral-200 border-neutral-300">.bg-white.shadow-xl.rounded-xl</span>
+                                <div class="bg-white p-5 rounded-xl shadow-xl border border-neutral-100 text-neutral-900">
+                                    <h4 class="text-sm font-semibold mb-1">Superfície de Card Elevado</h4>
+                                    <p class="text-xs text-neutral-500">Sombra suave projetada com borda neutra de 1px</p>
+                                </div>
+                                <div class="text-xs text-neutral-400">Utilizada para destaques de serviços e biografias clínicas</div>
+                            </div>
+
+                            <!-- Surface 3: Split Form Container -->
+                            <div class="ds-specimen-wrap space-y-4">
+                                <span class="ds-code-chip">.bg-white/5.border-white/10</span>
+                                <div class="p-4 rounded-lg bg-white/5 border border-white/10 flex items-center gap-3">
+                                    <div class="p-2 rounded-md bg-cyan-500/10 text-cyan-400">
+                                        <i data-lucide="scan-face" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs font-semibold text-white">Contêiner de Recurso em Vidro</div>
+                                        <div class="text-[11px] text-neutral-400">Fundo translúcido com ícone em destaque</div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-neutral-400">Utilizado nos destaques da seção de Resultados Reais</div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ========================================== -->
+                    <!-- 5. ÍCONES                                  -->
+                    <!-- ========================================== -->
+                    <section id="foundations-icons" class="scroll-mt-6 space-y-6">
+                        <div>
+                            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-cyan-400 block mb-1">Fundações</span>
+                            <h2 class="text-3xl font-serif text-white tracking-tight">Biblioteca de Ícones</h2>
+                            <p class="text-xs text-neutral-400 mt-1 max-w-2xl">
+                                Conjunto original de ícones Lucide (espessura de traço: 1.5) exibidos diretamente em grade alinhada de 5 colunas.
+                            </p>
+                        </div>
+
+                        <div class="ds-specimen-wrap grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 text-center">
+                            <div class="p-4 rounded-lg bg-white/5 border border-white/10 flex flex-col items-center gap-2">
+                                <i data-lucide="chevron-down" class="w-6 h-6 text-cyan-400"></i>
+                                <span class="text-[11px] font-mono text-neutral-300">chevron-down</span>
+                            </div>
+                            <div class="p-4 rounded-lg bg-white/5 border border-white/10 flex flex-col items-center gap-2">
+                                <i data-lucide="arrow-right" class="w-6 h-6 text-cyan-400"></i>
+                                <span class="text-[11px] font-mono text-neutral-300">arrow-right</span>
+                            </div>
+                            <div class="p-4 rounded-lg bg-white/5 border border-white/10 flex flex-col items-center gap-2">
+                                <i data-lucide="map-pin" class="w-6 h-6 text-cyan-400"></i>
+                                <span class="text-[11px] font-mono text-neutral-300">map-pin</span>
+                            </div>
+                            <div class="p-4 rounded-lg bg-white/5 border border-white/10 flex flex-col items-center gap-2">
+                                <i data-lucide="phone" class="w-6 h-6 text-cyan-400"></i>
+                                <span class="text-[11px] font-mono text-neutral-300">phone</span>
+                            </div>
+                            <div class="p-4 rounded-lg bg-white/5 border border-white/10 flex flex-col items-center gap-2">
+                                <i data-lucide="mail" class="w-6 h-6 text-cyan-400"></i>
+                                <span class="text-[11px] font-mono text-neutral-300">mail</span>
+                            </div>
+
+                            <div class="p-4 rounded-lg bg-white/5 border border-white/10 flex flex-col items-center gap-2">
+                                <i data-lucide="scan-face" class="w-6 h-6 text-cyan-400"></i>
+                                <span class="text-[11px] font-mono text-neutral-300">scan-face</span>
+                            </div>
+                            <div class="p-4 rounded-lg bg-white/5 border border-white/10 flex flex-col items-center gap-2">
+                                <i data-lucide="sparkles" class="w-6 h-6 text-cyan-400"></i>
+                                <span class="text-[11px] font-mono text-neutral-300">sparkles</span>
+                            </div>
+                            <div class="p-4 rounded-lg bg-white/5 border border-white/10 flex flex-col items-center gap-2">
+                                <i data-lucide="chevrons-left-right" class="w-6 h-6 text-cyan-400"></i>
+                                <span class="text-[11px] font-mono text-neutral-300">chevrons-left-right</span>
+                            </div>
+                            <div class="p-4 rounded-lg bg-white/5 border border-white/10 flex flex-col items-center gap-2">
+                                <i data-lucide="shield-check" class="w-6 h-6 text-cyan-400"></i>
+                                <span class="text-[11px] font-mono text-neutral-300">shield-check</span>
+                            </div>
+                            <div class="p-4 rounded-lg bg-white/5 border border-white/10 flex flex-col items-center gap-2">
+                                <i data-lucide="clock" class="w-6 h-6 text-cyan-400"></i>
+                                <span class="text-[11px] font-mono text-neutral-300">clock</span>
+                            </div>
+
+                            <div class="p-4 rounded-lg bg-white/5 border border-white/10 flex flex-col items-center gap-2">
+                                <i data-lucide="check" class="w-6 h-6 text-cyan-400"></i>
+                                <span class="text-[11px] font-mono text-neutral-300">check</span>
+                            </div>
+                            <div class="p-4 rounded-lg bg-white/5 border border-white/10 flex flex-col items-center gap-2">
+                                <i data-lucide="menu" class="w-6 h-6 text-cyan-400"></i>
+                                <span class="text-[11px] font-mono text-neutral-300">menu</span>
+                            </div>
+                            <div class="p-4 rounded-lg bg-white/5 border border-white/10 flex flex-col items-center gap-2">
+                                <i data-lucide="x" class="w-6 h-6 text-cyan-400"></i>
+                                <span class="text-[11px] font-mono text-neutral-300">x</span>
+                            </div>
+                            <div class="p-4 rounded-lg bg-white/5 border border-white/10 flex flex-col items-center gap-2">
+                                <i data-lucide="instagram" class="w-6 h-6 text-cyan-400"></i>
+                                <span class="text-[11px] font-mono text-neutral-300">instagram</span>
+                            </div>
+                            <div class="p-4 rounded-lg bg-white/5 border border-white/10 flex flex-col items-center gap-2">
+                                <i data-lucide="facebook" class="w-6 h-6 text-cyan-400"></i>
+                                <span class="text-[11px] font-mono text-neutral-300">facebook</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ========================================== -->
+                    <!-- 6. AÇÕES & BOTÕES                          -->
+                    <!-- ========================================== -->
+                    <section id="components-actions" class="scroll-mt-6 space-y-6">
+                        <div>
+                            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-cyan-400 block mb-1">Componentes</span>
+                            <h2 class="text-3xl font-serif text-white tracking-tight">Ações &amp; Botões</h2>
+                            <p class="text-xs text-neutral-400 mt-1 max-w-2xl">
+                                Variantes de botões extraídas do projeto com comportamentos exatos de hover e clique.
+                            </p>
+                        </div>
+
+                        <div class="ds-specimen-wrap space-y-8">
+                            <!-- Specimen 1: Primary Solid Pill -->
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-white">Botão Sólido Principal (Fundo Escuro)</span>
+                                    <span class="ds-code-chip">.bg-white.text-neutral-950.rounded-full.hover:bg-neutral-200</span>
+                                </div>
+                                <div class="p-6 bg-neutral-950 rounded-xl border border-white/10 flex items-center gap-4">
+                                    <button class="px-8 py-3.5 bg-white text-neutral-950 rounded-full text-xs font-semibold hover:bg-neutral-200 transition-colors shadow-lg shadow-white/5">
+                                        Agendar Consulta
+                                    </button>
+                                    <span class="text-xs text-neutral-400">Estado padrão &amp; hover sobre superfície escura</span>
+                                </div>
+                            </div>
+
+                            <!-- Specimen 2: Secondary Glass Pill -->
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-white">Botão Secundário em Pílula de Vidro</span>
+                                    <span class="ds-code-chip">.glass-panel.text-white.rounded-full.hover:bg-white/10</span>
+                                </div>
+                                <div class="p-6 bg-neutral-950 rounded-xl border border-white/10 flex items-center gap-4">
+                                    <button class="px-8 py-3.5 glass-panel text-white rounded-full text-xs font-semibold hover:bg-white/10 transition-colors flex items-center gap-2 group border border-white/20">
+                                        <span>Ver Tratamentos</span>
+                                        <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Specimen 3: Outline Button (Light Context) -->
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-white">Botão em Linha de Contorno (Superfície Clara)</span>
+                                    <span class="ds-code-chip">.border.border-neutral-200.text-neutral-900.hover:bg-neutral-50</span>
+                                </div>
+                                <div class="p-6 bg-white rounded-xl border border-neutral-200 flex items-center gap-4">
+                                    <button class="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-neutral-200 text-xs font-semibold text-neutral-900 hover:bg-neutral-50 transition-colors group">
+                                        <span>Ver Todos os Serviços</span>
+                                        <i data-lucide="arrow-right" class="w-3 h-3 group-hover:translate-x-1 transition-transform"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Specimen 4: Solid Form Action Button -->
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-white">Botão de Ação de Formulário em Largura Total</span>
+                                    <span class="ds-code-chip">.bg-neutral-900.text-white.rounded-lg.active:scale-[0.99]</span>
+                                </div>
+                                <div class="p-6 bg-white rounded-xl border border-neutral-200 max-w-md">
+                                    <button class="w-full py-3.5 bg-neutral-900 text-white rounded-lg text-sm font-semibold hover:bg-neutral-800 transition-transform active:scale-[0.99]">
+                                        Continuar para Detalhes
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ========================================== -->
+                    <!-- 7. NAVEGAÇÃO & MENUS                       -->
+                    <!-- ========================================== -->
+                    <section id="components-navigation" class="scroll-mt-6 space-y-6">
+                        <div>
+                            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-cyan-400 block mb-1">Componentes</span>
+                            <h2 class="text-3xl font-serif text-white tracking-tight">Navegação &amp; Menus</h2>
+                            <p class="text-xs text-neutral-400 mt-1 max-w-2xl">
+                                Barra superior de navegação, contêiner flutuante em pílula e painel Mega Menu extraídos da Visão Geral.
+                            </p>
+                        </div>
+
+                        <div class="ds-specimen-wrap space-y-8">
+                            <!-- Floating Pill Menu Container -->
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-white">Menu Flutuante em Pílula Translúcida</span>
+                                    <span class="ds-code-chip">.backdrop-blur-md.rounded-full.border-white/10</span>
+                                </div>
+                                <div class="p-6 bg-neutral-950 rounded-xl border border-white/10 flex items-center justify-center">
+                                    <div class="flex items-center gap-1 backdrop-blur-md rounded-full px-2 py-1.5 border border-white/10 bg-white/5">
+                                        <a href="#overview" class="px-4 py-1.5 text-xs font-medium rounded-full text-white/90 hover:text-white transition-colors">Início</a>
+                                        <a href="#overview" class="px-4 py-1.5 text-xs font-medium rounded-full text-white/90 hover:text-white transition-colors">Sobre</a>
+                                        <a href="#overview" class="px-4 py-1.5 text-xs font-medium rounded-full text-white/90 hover:text-white transition-colors">Serviços</a>
+                                        <a href="#overview" class="px-4 py-1.5 text-xs font-medium rounded-full text-white/90 hover:text-white transition-colors">Novos Pacientes</a>
+                                        <a href="#overview" class="px-4 py-1.5 text-xs font-medium rounded-full text-white/90 hover:text-white transition-colors">Contato</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mega Menu Panel Specimen -->
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-semibold text-white">Painel Mega Menu de Serviços (Estado Aberto)</span>
+                                    <span class="ds-code-chip">.w-[800px].bg-white.rounded-xl.shadow-2xl.grid-cols-3</span>
+                                </div>
+                                <div class="p-6 bg-neutral-950 rounded-xl border border-white/10 flex justify-center">
+                                    <div class="w-full max-w-3xl bg-white text-neutral-900 border border-neutral-100 rounded-xl shadow-2xl p-6">
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                            <!-- Column 1 -->
+                                            <div>
+                                                <h6 class="text-[10px] font-bold text-neutral-400 uppercase tracking-widest mb-4">Cuidados Imediatos</h6>
+                                                <div class="space-y-1">
+                                                    <a href="#" class="block px-3 py-2 text-xs font-medium text-neutral-600 hover:bg-neutral-50 rounded-lg transition-colors hover:text-cyan-600">Odontologia de Emergência</a>
+                                                    <a href="#" class="block px-3 py-2 text-xs font-medium text-neutral-600 hover:bg-neutral-50 rounded-lg transition-colors hover:text-cyan-600">Tratamento de Canal</a>
+                                                    <a href="#" class="block px-3 py-2 text-xs font-medium text-neutral-600 hover:bg-neutral-50 rounded-lg transition-colors hover:text-cyan-600">Substituição Dental</a>
+                                                </div>
+                                            </div>
+                                            <!-- Column 2 -->
+                                            <div class="border-l border-neutral-100 md:pl-8">
+                                                <h6 class="text-[10px] font-bold text-neutral-400 uppercase tracking-widest mb-4">Preventivo &amp; Família</h6>
+                                                <div class="space-y-1">
+                                                    <a href="#" class="block px-3 py-2 text-xs font-medium text-neutral-600 hover:bg-neutral-50 rounded-lg transition-colors hover:text-cyan-600">Odontologia Geral e Familiar</a>
+                                                    <a href="#" class="block px-3 py-2 text-xs font-medium text-neutral-600 hover:bg-neutral-50 rounded-lg transition-colors hover:text-cyan-600">Odontopediatria</a>
+                                                    <a href="#" class="block px-3 py-2 text-xs font-medium text-neutral-600 hover:bg-neutral-50 rounded-lg transition-colors hover:text-cyan-600">Limpezas &amp; Checkups</a>
+                                                </div>
+                                            </div>
+                                            <!-- Column 3 -->
+                                            <div class="border-l border-neutral-100 md:pl-8">
+                                                <h6 class="text-[10px] font-bold text-neutral-400 uppercase tracking-widest mb-4">Especialidades &amp; Conforto</h6>
+                                                <div class="space-y-1">
+                                                    <a href="#" class="block px-3 py-2 text-xs font-medium text-neutral-600 hover:bg-neutral-50 rounded-lg transition-colors hover:text-cyan-600">Implantes Dentários</a>
+                                                    <a href="#" class="block px-3 py-2 text-xs font-medium text-neutral-600 hover:bg-neutral-50 rounded-lg transition-colors hover:text-cyan-600">Odontologia com Sedação</a>
+                                                    <a href="#" class="block px-3 py-2 text-xs font-medium text-neutral-600 hover:bg-neutral-50 rounded-lg transition-colors hover:text-cyan-600">Clareamento Dental</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ========================================== -->
+                    <!-- 8. CARDS & CONTÊINERES                     -->
+                    <!-- ========================================== -->
+                    <section id="components-cards" class="scroll-mt-6 space-y-6">
+                        <div>
+                            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-cyan-400 block mb-1">Componentes</span>
+                            <h2 class="text-3xl font-serif text-white tracking-tight">Cards &amp; Contêineres</h2>
+                            <p class="text-xs text-neutral-400 mt-1 max-w-2xl">
+                                Cartão de serviço com proporção 3/4, perfil médico circular e bloco de recurso clínico.
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <!-- Service Card Specimen -->
+                            <div class="bg-white p-5 rounded-xl border border-neutral-200 text-neutral-900 group cursor-pointer shadow-lg">
+                                <div class="relative aspect-[3/4] overflow-hidden rounded-md mb-4 bg-neutral-200">
+                                    <img src="./assets/overview/assets/images.unsplash.com/photo-1606811841689-23dfddce3e95__qeef58ead.avif" alt="Cuidado Geral" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                                    <div class="absolute top-3 right-3 bg-white/90 backdrop-blur px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-sm text-neutral-900">
+                                        Novos Pacientes
+                                    </div>
+                                </div>
+                                <h3 class="text-lg font-semibold tracking-tight text-neutral-900 mb-1 group-hover:text-cyan-600 transition-colors">
+                                    Odontologia Geral
+                                </h3>
+                                <p class="text-xs text-neutral-500 leading-relaxed mb-3">
+                                    Exames detalhados, limpezas profiláticas e cuidados preventivos completos para toda a família.
+                                </p>
+                                <span class="text-xs font-medium text-neutral-900 underline decoration-neutral-300 underline-offset-4">
+                                    Cuidado Integral
+                                </span>
+                                <div class="mt-4 pt-3 border-t border-neutral-100 flex justify-between items-center">
+                                    <span class="ds-code-chip text-neutral-800 bg-neutral-100 border-neutral-300">.aspect-[3/4].rounded-sm</span>
+                                </div>
+                            </div>
+
+                            <!-- Doctor Profile Card -->
+                            <div class="bg-neutral-900 p-6 rounded-xl border border-white/10 flex flex-col items-center text-center group">
+                                <div class="relative w-36 h-36 rounded-2xl p-1 border border-[#c5a059]/40 bg-[#071f22] group-hover:border-[#c5a059] transition-colors duration-300 mb-4 overflow-hidden">
+                                    <div class="w-full h-full rounded-xl overflow-hidden">
+                                        <img src="./assets/images/ss-odonto/logo-ss-odonto.jpg" alt="Dra. Especialista" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                                    </div>
+                                </div>
+                                <h4 class="text-xl font-serif text-white mb-1">Dra. Responsável Técnica</h4>
+                                <span class="text-[10px] font-bold uppercase tracking-widest text-[#dfba73] mb-3">Odontologia Especializada &amp; Estética</span>
+                                <p class="text-xs text-neutral-400 leading-relaxed mb-4">
+                                    Especialista em odontologia estética avançada, lentes de contato dental, clareamento e atendimento humanizado.
+                                </p>
+                                <span class="ds-code-chip mt-auto">.rounded-2xl.border-gold</span>
+                            </div>
+
+                            <!-- Feature Glass Callout Card -->
+                            <div class="ds-specimen-wrap flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <span class="ds-code-chip">.bg-white/5.border-white/10</span>
+                                    <div class="p-5 border border-white/10 rounded-lg bg-white/5 space-y-3">
+                                        <div class="w-10 h-10 rounded-md bg-cyan-500/10 text-cyan-400 flex items-center justify-center">
+                                            <i data-lucide="scan-face" class="w-5 h-5"></i>
+                                        </div>
+                                        <h4 class="text-base font-semibold text-white">Prévia do seu Sorriso</h4>
+                                        <p class="text-xs text-neutral-400 leading-relaxed">
+                                            Antes de iniciar qualquer tratamento, você visualiza o resultado final planejado por escaneamento digital 3D.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="text-[11px] text-neutral-400 mt-4">Caixa de ícone com preenchimento ciano a 10%</div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ========================================== -->
+                    <!-- 9. EXIBIÇÃO DE DADOS & SLIDERS             -->
+                    <!-- ========================================== -->
+                    <section id="components-data-display" class="scroll-mt-6 space-y-6">
+                        <div>
+                            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-cyan-400 block mb-1">Componentes</span>
+                            <h2 class="text-3xl font-serif text-white tracking-tight">Exibição de Dados &amp; Sliders</h2>
+                            <p class="text-xs text-neutral-400 mt-1 max-w-2xl">
+                                Slider comparativo interativo Antes/Depois e blocos de indicadores numéricos.
+                            </p>
+                        </div>
+
+                        <!-- Live Comparison Slider Specimen -->
+                        <div class="ds-specimen-wrap space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="text-base font-serif text-white">Slider Comparativo de Sorriso Antes / Depois</h4>
+                                    <p class="text-xs text-neutral-400">Arraste o cursor horizontalmente para comparar a transformação estética</p>
+                                </div>
+                                <span class="ds-code-chip">.comparison-slider.touch-action-pan-y</span>
+                            </div>
+
+                            <div class="relative w-full max-w-2xl mx-auto aspect-[4/3] rounded-xl overflow-hidden border border-white/10 shadow-2xl comparison-slider" id="specimenSlider">
+                                <!-- After Image -->
+                                <img src="./assets/overview/assets/i.ibb.co/pr9SrnpV/Untitled-Live-Doc.png" class="absolute inset-0 w-full h-full object-cover" alt="Resultado Depois">
+                                <div class="absolute top-4 right-4 bg-black/60 backdrop-blur px-2.5 py-1 text-[10px] font-bold tracking-wider rounded text-white">DEPOIS</div>
+
+                                <!-- Before Image (Clipped Overlay) -->
+                                <div class="comparison-item" id="specimenOverlay" style="width: 50%;">
+                                    <img src="./assets/overview/assets/i.ibb.co/rKp2mnPt/Before.jpg" class="absolute top-0 left-0 h-full max-w-none w-full object-cover" id="specimenBeforeImg" alt="Resultado Antes">
+                                    <div class="absolute top-4 left-4 bg-black/60 backdrop-blur px-2.5 py-1 text-[10px] font-bold tracking-wider rounded text-white">ANTES</div>
+                                </div>
+
+                                <!-- Handle -->
+                                <div class="comparison-handle" id="specimenHandle" style="left: 50%;">
+                                    <div class="comparison-circle">
+                                        <i data-lucide="chevrons-left-right" class="w-4 h-4 text-neutral-900"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Metric Stat Counter Boxes -->
+                        <div class="ds-specimen-wrap grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                            <div class="p-4 bg-white/5 rounded-xl border border-white/10">
+                                <span class="block text-4xl font-serif text-white mb-1">13+</span>
+                                <span class="text-xs text-neutral-400 uppercase tracking-wide">Anos de Experiência</span>
+                            </div>
+                            <div class="p-4 bg-white/5 rounded-xl border border-white/10">
+                                <span class="block text-4xl font-serif text-white mb-1">1K+</span>
+                                <span class="text-xs text-neutral-400 uppercase tracking-wide">Pacientes Satisfeitos</span>
+                            </div>
+                            <div class="p-4 bg-white/5 rounded-xl border border-white/10">
+                                <span class="block text-4xl font-serif text-cyan-400 mb-1">100%</span>
+                                <span class="text-xs text-neutral-400 uppercase tracking-wide">Fluxo Digital</span>
+                            </div>
+                            <div class="p-4 bg-white/5 rounded-xl border border-white/10">
+                                <span class="block text-4xl font-serif text-white mb-1">4.9★</span>
+                                <span class="text-xs text-neutral-400 uppercase tracking-wide">Avaliação Média</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ========================================== -->
+                    <!-- 10. ENTRADAS & FORMULÁRIOS                 -->
+                    <!-- ========================================== -->
+                    <section id="components-forms" class="scroll-mt-6 space-y-6">
+                        <div>
+                            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-cyan-400 block mb-1">Componentes</span>
+                            <h2 class="text-3xl font-serif text-white tracking-tight">Entradas &amp; Formulários</h2>
+                            <p class="text-xs text-neutral-400 mt-1 max-w-2xl">
+                                Seletores de categoria em pílula, cartões interativos de serviços e botões de horários do agendamento.
+                            </p>
+                        </div>
+
+                        <div class="ds-specimen-wrap bg-white text-neutral-900 rounded-2xl p-8 max-w-3xl space-y-8">
+                            <!-- Category Pill Radios -->
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wide text-neutral-500 mb-3">Seletor de Categoria em Pílula</label>
+                                <div class="flex gap-3">
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="demo-category" class="peer sr-only" checked>
+                                        <div class="px-5 py-2 rounded-full border border-neutral-200 text-xs font-medium text-neutral-600 peer-checked:bg-neutral-900 peer-checked:text-white peer-checked:border-neutral-900 transition-all">
+                                            Odontologia
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="demo-category" class="peer sr-only">
+                                        <div class="px-5 py-2 rounded-full border border-neutral-200 text-xs font-medium text-neutral-600 peer-checked:bg-neutral-900 peer-checked:text-white peer-checked:border-neutral-900 transition-all">
+                                            Injetáveis
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="demo-category" class="peer sr-only">
+                                        <div class="px-5 py-2 rounded-full border border-neutral-200 text-xs font-medium text-neutral-600 peer-checked:bg-neutral-900 peer-checked:text-white peer-checked:border-neutral-900 transition-all">
+                                            Estética
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Service Choice Selection Cards -->
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wide text-neutral-500 mb-3">Cards de Seleção de Tratamento</label>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <label class="cursor-pointer group">
+                                        <input type="radio" name="demo-service" class="peer sr-only" checked>
+                                        <div class="p-4 rounded-xl border border-neutral-200 bg-white peer-checked:ring-2 peer-checked:border-cyan-500 peer-checked:ring-cyan-500/20 transition-all hover:border-cyan-200">
+                                            <div class="flex justify-between mb-1">
+                                                <span class="text-sm font-semibold text-neutral-900">Clareamento Dental</span>
+                                                <span class="text-sm font-medium text-neutral-900">$385</span>
+                                            </div>
+                                            <span class="text-[10px] text-neutral-400">60 mins · Atendimento Imediato</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer group">
+                                        <input type="radio" name="demo-service" class="peer sr-only">
+                                        <div class="p-4 rounded-xl border border-neutral-200 bg-white peer-checked:ring-2 peer-checked:border-cyan-500 peer-checked:ring-cyan-500/20 transition-all hover:border-cyan-200">
+                                            <div class="flex justify-between mb-1">
+                                                <span class="text-sm font-semibold text-neutral-900">Consulta de Avaliação</span>
+                                                <span class="text-sm font-medium text-neutral-900">Gratuita</span>
+                                            </div>
+                                            <span class="text-[10px] text-neutral-400">45 mins · Escaneamento Digital</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Availability Slot Grid -->
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wide text-neutral-500 mb-3">Horários Disponíveis</label>
+                                <div class="grid grid-cols-4 gap-3">
+                                    <button class="py-2.5 text-xs font-medium border border-neutral-200 rounded-lg bg-neutral-900 text-white transition-colors">09:00</button>
+                                    <button class="py-2.5 text-xs font-medium border border-neutral-200 rounded-lg bg-neutral-50 text-neutral-300 cursor-not-allowed">10:30</button>
+                                    <button class="py-2.5 text-xs font-medium border border-neutral-200 rounded-lg hover:border-neutral-400 transition-colors">13:00</button>
+                                    <button class="py-2.5 text-xs font-medium border border-neutral-200 rounded-lg hover:border-neutral-400 transition-colors">15:15</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ========================================== -->
+                    <!-- 11. RODAPÉ DA MARCA                        -->
+                    <!-- ========================================== -->
+                    <section id="components-footer" class="scroll-mt-6 space-y-6 pb-20">
+                        <div>
+                            <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-cyan-400 block mb-1">Componentes</span>
+                            <h2 class="text-3xl font-serif text-white tracking-tight">Rodapé da Marca</h2>
+                            <p class="text-xs text-neutral-400 mt-1 max-w-2xl">
+                                Componente completo de rodapé escuro com logotipo, redes sociais, navegação em colunas, contatos e informações legais.
+                            </p>
+                        </div>
+
+                        <div class="rounded-2xl overflow-hidden border border-neutral-800 bg-[#071f22] p-8 lg:p-12">
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                                <div class="md:col-span-1 space-y-4">
+                                    <div class="flex items-center gap-3">
+                                        <img src="./assets/images/ss-odonto/logo-ss-odonto.jpg" alt="Logo SS Odonto" class="w-8 h-8 rounded-lg object-cover border border-[#c5a059]/40">
+                                        <span class="font-serif text-xl text-white">SS Odonto</span>
+                                    </div>
+                                    <p class="text-xs text-neutral-400">Odontologia Especializada com atendimento humanizado, cantinho do café e conforto total.</p>
+                                    <div class="flex gap-4 text-neutral-400">
+                                        <i data-lucide="instagram" class="w-4 h-4 hover:text-[#dfba73] cursor-pointer transition-colors"></i>
+                                        <i data-lucide="facebook" class="w-4 h-4 hover:text-[#dfba73] cursor-pointer transition-colors"></i>
+                                        <i data-lucide="message-circle" class="w-4 h-4 hover:text-[#dfba73] cursor-pointer transition-colors"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h5 class="text-xs font-semibold text-[#dfba73] uppercase tracking-wider mb-4">Navegação</h5>
+                                    <ul class="space-y-2 text-xs text-neutral-400">
+                                        <li><a href="#overview" class="hover:text-white">Início</a></li>
+                                        <li><a href="#overview" class="hover:text-white">Sobre Nós</a></li>
+                                        <li><a href="#overview" class="hover:text-white">Especialidades</a></li>
+                                        <li><a href="#overview" class="hover:text-white">Estrutura &amp; Espaço</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 class="text-xs font-semibold text-[#dfba73] uppercase tracking-wider mb-4">Localização &amp; Contato</h5>
+                                    <ul class="space-y-2 text-xs text-neutral-400">
+                                        <li class="flex items-start gap-2">
+                                            <i data-lucide="map-pin" class="w-4 h-4 text-[#dfba73] shrink-0 mt-0.5"></i>
+                                            <span>Atendimento com hora marcada e estacionamento no local.</span>
+                                        </li>
+                                        <li class="flex items-center gap-2">
+                                            <i data-lucide="phone" class="w-4 h-4 text-[#dfba73] shrink-0"></i>
+                                            <span>(11) 99999-9999 · WhatsApp</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 class="text-xs font-semibold text-[#dfba73] uppercase tracking-wider mb-4">Horário de Atendimento</h5>
+                                    <ul class="space-y-1.5 text-xs text-neutral-400">
+                                        <li class="flex justify-between"><span>Seg - Sex</span><span class="text-white">08:00 - 19:00</span></li>
+                                        <li class="flex justify-between"><span>Sábado</span><span class="text-white">08:00 - 13:00</span></li>
+                                        <li class="flex justify-between"><span>Domingo</span><span class="text-neutral-500">Fechado</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between text-xs text-neutral-500 gap-4">
+                                <p>© 2026 SS Odonto — Odontologia Especializada. Todos os direitos reservados.</p>
+                                <div class="flex gap-6">
+                                    <a href="#" class="hover:text-white">Política de Privacidade</a>
+                                    <a href="#" class="hover:text-white">Termos de Uso</a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Router & Interactive Component Logic -->
+    <script>
+        function syncRoute() {
+            const hash = window.location.hash || '#overview';
+            const tabOverview = document.getElementById('tab-overview');
+            const tabComponents = document.getElementById('tab-components');
+            const frameOverview = document.getElementById('overview-frame');
+            const viewComponents = document.getElementById('components-view');
+
+            if (hash.startsWith('#components') || hash.startsWith('#foundations-') || hash.startsWith('#components-')) {
+                tabOverview.className = 'px-5 py-1.5 text-xs font-medium rounded-full text-white/70 hover:text-white transition-all duration-200';
+                tabComponents.className = 'px-5 py-1.5 text-xs font-semibold rounded-full bg-white text-neutral-950 shadow-sm transition-all duration-200';
+                frameOverview.classList.add('hidden');
+                viewComponents.classList.remove('hidden');
+
+                // If anchor to specific group inside components
+                if (hash.startsWith('#foundations-') || hash.startsWith('#components-')) {
+                    const el = document.querySelector(hash);
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }
+            } else {
+                tabOverview.className = 'px-5 py-1.5 text-xs font-semibold rounded-full bg-white text-neutral-950 shadow-sm transition-all duration-200';
+                tabComponents.className = 'px-5 py-1.5 text-xs font-medium rounded-full text-white/70 hover:text-white transition-all duration-200';
+                frameOverview.classList.remove('hidden');
+                viewComponents.classList.add('hidden');
+            }
+        }
+
+        window.addEventListener('hashchange', syncRoute);
+        if (!window.location.hash) {
+            window.location.hash = '#overview';
+        } else {
+            syncRoute();
+        }
+
+        // Initialize Lucide Icons
+        if (window.lucide) {
+            lucide.createIcons({ attrs: { 'stroke-width': 1.5 } });
+        }
+
+        // Initialize Specimen Comparison Slider
+        const sSlider = document.getElementById('specimenSlider');
+        const sOverlay = document.getElementById('specimenOverlay');
+        const sHandle = document.getElementById('specimenHandle');
+        const sBeforeImg = document.getElementById('specimenBeforeImg');
+        let sIsDown = false;
+
+        function updateSpecimenSlider(x) {
+            if (!sSlider) return;
+            const rect = sSlider.getBoundingClientRect();
+            let pos = ((x - rect.left) / rect.width) * 100;
+            if (pos < 0) pos = 0;
+            if (pos > 100) pos = 100;
+            sOverlay.style.width = pos + '%';
+            sHandle.style.left = pos + '%';
+        }
+
+        if (sSlider) {
+            sSlider.addEventListener('mousedown', () => sIsDown = true);
+            window.addEventListener('mouseup', () => sIsDown = false);
+            sSlider.addEventListener('mousemove', (e) => { if (sIsDown) updateSpecimenSlider(e.clientX); });
+
+            sSlider.addEventListener('touchstart', () => sIsDown = true);
+            window.addEventListener('touchend', () => sIsDown = false);
+            sSlider.addEventListener('touchmove', (e) => { if (sIsDown && e.touches[0]) updateSpecimenSlider(e.touches[0].clientX); });
+
+            const syncSpecimenWidth = () => {
+                if (sBeforeImg && sSlider) sBeforeImg.style.width = sSlider.offsetWidth + 'px';
+            };
+            window.addEventListener('resize', syncSpecimenWidth);
+            syncSpecimenWidth();
+        }
+    </script>
+</body>
+</html>

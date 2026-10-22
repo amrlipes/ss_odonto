@@ -1,0 +1,45 @@
+{
+ "builders": [
+  "aura (aura-html)"
+ ],
+ "libraries": [
+  {
+   "name": "lucide",
+   "version": "1.61.0",
+   "sources": [
+    "https://unpkg.com/lucide@1.61.0/dist/umd/lucide.min.js"
+   ]
+  },
+  {
+   "name": "tailwindcss (Play CDN)",
+   "version": "3.4.17",
+   "sources": [
+    "https://cdn.tailwindcss.com/3.4.17"
+   ]
+  }
+ ],
+ "runtime": {
+  "contexts": {},
+  "wasm": 0,
+  "workers": 0,
+  "webgpu": false,
+  "shadowRoots": 0,
+  "canvases": 0
+ },
+ "cssFeatures": [],
+ "fonts": {
+  "families": [
+   "Inter",
+   "Playfair Display"
+  ],
+  "sources": [
+   "google fonts"
+  ]
+ },
+ "videos": [],
+ "files": {
+  "text": 4,
+  "image": 12,
+  "font": 3
+ }
+}

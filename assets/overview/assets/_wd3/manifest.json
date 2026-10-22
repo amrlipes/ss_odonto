@@ -1,0 +1,249 @@
+{
+ "entryUrl": "https://freemansbaydentalclinic.aura.build/",
+ "capturedAt": "2026-10-21T16:55:20+00:00",
+ "indexHtml": {
+  "kind": "arquivo",
+  "description": "site vivo aberto com duplo clique (file://): um runtime faz o papel do Service Worker; imagens e vídeos que a página só exibe são lidos de assets/, o resto (CSS, JS, fontes, dados, imagens de WebGL) vai embutido no index.html"
+ },
+ "files": [
+  {
+   "url": "https://freemansbaydentalclinic.aura.build/favicon.ico",
+   "file": "assets/freemansbaydentalclinic.aura.build/favicon.ico",
+   "type": "image/vnd.microsoft.icon",
+   "resourceType": "other",
+   "size": 696,
+   "status": 200,
+   "party": "first",
+   "passes": [
+    "desktop"
+   ]
+  },
+  {
+   "url": "https://freemansbaydentalclinic.aura.build/",
+   "file": "assets/freemansbaydentalclinic.aura.build/index.html",
+   "type": "text/html",
+   "resourceType": "document",
+   "size": 64895,
+   "status": 200,
+   "party": "first",
+   "passes": [
+    "desktop"
+   ]
+  },
+  {
+   "url": "https://cdn.tailwindcss.com/3.4.17",
+   "file": "assets/cdn.tailwindcss.com/3.4.17.js",
+   "type": "text/javascript",
+   "resourceType": "script",
+   "size": 407279,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ],
+   "library": {
+    "name": "tailwindcss (Play CDN)",
+    "version": "3.4.17"
+   },
+   "role": "library"
+  },
+  {
+   "url": "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap",
+   "file": "assets/fonts.googleapis.com/css2__q8730920e.css",
+   "type": "text/css",
+   "resourceType": "stylesheet",
+   "size": 16765,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ],
+   "role": "third-party"
+  },
+  {
+   "url": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2",
+   "file": "assets/fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2",
+   "type": "font/woff2",
+   "resourceType": "font",
+   "size": 48432,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ]
+  },
+  {
+   "url": "https://fonts.gstatic.com/s/playfairdisplay/v40/nuFRD-vYSZviVYUb_rj3ij__anPXDTnCjmHKM4nYO7KN_qiTXtHA-X-uE0qEEw.woff2",
+   "file": "assets/fonts.gstatic.com/s/playfairdisplay/v40/nuFRD-vYSZviVYUb_rj3ij__anPXDTnCjmHKM4nYO7KN_qiTXtHA-X-uE0qEEw.woff2",
+   "type": "font/woff2",
+   "resourceType": "font",
+   "size": 21952,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ]
+  },
+  {
+   "url": "https://fonts.gstatic.com/s/playfairdisplay/v40/nuFiD-vYSZviVYUb_rj3ij__anPXDTzYgEM86xQ.woff2",
+   "file": "assets/fonts.gstatic.com/s/playfairdisplay/v40/nuFiD-vYSZviVYUb_rj3ij__anPXDTzYgEM86xQ.woff2",
+   "type": "font/woff2",
+   "resourceType": "font",
+   "size": 38460,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ]
+  },
+  {
+   "url": "https://i.ibb.co/7NRgqhWK/aqua-loft-logo.png",
+   "file": "assets/i.ibb.co/7NRgqhWK/aqua-loft-logo.png",
+   "type": "image/png",
+   "resourceType": "image",
+   "size": 23189,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ]
+  },
+  {
+   "url": "https://i.ibb.co/9mY4fcvX/Dentists-on-white-sofa.webp",
+   "file": "assets/i.ibb.co/9mY4fcvX/Dentists-on-white-sofa.webp",
+   "type": "image/webp",
+   "resourceType": "image",
+   "size": 79224,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ]
+  },
+  {
+   "url": "https://i.ibb.co/VWF4FqZ2/dr-jamily-pedro-icon.webp",
+   "file": "assets/i.ibb.co/VWF4FqZ2/dr-jamily-pedro-icon.webp",
+   "type": "image/webp",
+   "resourceType": "image",
+   "size": 7614,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ]
+  },
+  {
+   "url": "https://i.ibb.co/Y4LpBkGf/dr-casey-pedro-icon.webp",
+   "file": "assets/i.ibb.co/Y4LpBkGf/dr-casey-pedro-icon.webp",
+   "type": "image/webp",
+   "resourceType": "image",
+   "size": 5640,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ]
+  },
+  {
+   "url": "https://i.ibb.co/pr9SrnpV/Untitled-Live-Doc.png",
+   "file": "assets/i.ibb.co/pr9SrnpV/Untitled-Live-Doc.png",
+   "type": "image/png",
+   "resourceType": "image",
+   "size": 5640239,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ]
+  },
+  {
+   "url": "https://i.ibb.co/qM2Ldm3m/AD-Blue-camera.jpg",
+   "file": "assets/i.ibb.co/qM2Ldm3m/AD-Blue-camera.jpg",
+   "type": "image/jpeg",
+   "resourceType": "image",
+   "size": 147379,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ]
+  },
+  {
+   "url": "https://i.ibb.co/rKp2mnPt/Before.jpg",
+   "file": "assets/i.ibb.co/rKp2mnPt/Before.jpg",
+   "type": "image/jpeg",
+   "resourceType": "image",
+   "size": 4160990,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ]
+  },
+  {
+   "url": "https://i.ibb.co/ync4gYGR/AD-Team.jpg",
+   "file": "assets/i.ibb.co/ync4gYGR/AD-Team.jpg",
+   "type": "image/jpeg",
+   "resourceType": "image",
+   "size": 223067,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ]
+  },
+  {
+   "url": "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=1000&auto=format&fit=crop",
+   "file": "assets/images.unsplash.com/photo-1588776814546-1ffcf47267a5__qeef58ead.avif",
+   "type": "image/avif",
+   "resourceType": "image",
+   "size": 42595,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ]
+  },
+  {
+   "url": "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?q=80&w=800&auto=format&fit=crop",
+   "file": "assets/images.unsplash.com/photo-1598256989800-fe5f95da9787__qeafec042.avif",
+   "type": "image/avif",
+   "resourceType": "image",
+   "size": 39164,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ]
+  },
+  {
+   "url": "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80&w=1000&auto=format&fit=crop",
+   "file": "assets/images.unsplash.com/photo-1606811841689-23dfddce3e95__qeef58ead.avif",
+   "type": "image/avif",
+   "resourceType": "image",
+   "size": 52002,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ]
+  },
+  {
+   "url": "https://unpkg.com/lucide@1.61.0/dist/umd/lucide.min.js",
+   "file": "assets/unpkg.com/lucide@1.61.0/dist/umd/lucide.min.js",
+   "type": "text/javascript",
+   "resourceType": "script",
+   "size": 457255,
+   "status": 200,
+   "party": "third",
+   "passes": [
+    "desktop"
+   ],
+   "library": {
+    "name": "lucide",
+    "version": "1.61.0"
+   },
+   "role": "library"
+  }
+ ]
+}
